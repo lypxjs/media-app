@@ -1,0 +1,21 @@
+# 构建产物
+*.apk
+*.aab
+app/app/build/
+app/build/
+build/
+.gradle/
+
+# 索引数据（体积大且为采集数据，请自行生成）
+*.db
+*.db.gz
+*.db.tmp
+
+# IDE / 本机配置
+local.properties
+.idea/
+*.iml
+
+# 系统文件
+.DS_Store
+Thumbs.db
