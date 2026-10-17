@@ -29,8 +29,8 @@ object SyncManager {
 
     private const val TAG = "SyncManager"
 
-    /** NAS 局域网地址。只用于补数据，App 不依赖它也能完整使用。 */
-    private const val LAN_BASE = "http://127.0.0.1:8091"
+    /** NAS 局域网地址（构建时由 SYNC_HOST 注入）。只用于补数据，App 不依赖它也能完整使用。 */
+    private val LAN_BASE = BuildConfig.SYNC_HOST
 
     private const val CONNECT_TIMEOUT = 2500
     private const val READ_TIMEOUT = 15000

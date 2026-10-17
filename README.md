@@ -51,6 +51,16 @@ ExoPlayer 直连内容 CDN（不经过家里）
 - 取不到无损自动降级 320k → 128k
 - 歌手快捷入口、底部播放条、自动连播
 
+## 下载
+
+到 [Releases](https://github.com/lypxjs/media-app/releases) 下载 APK（约 37 MB，含全部索引，装完即用）：
+
+| 文件 | 说明 |
+|---|---|
+| `media-app-v1.1.apk` | 内置 19.7 万条索引，开箱即用；`SYNC_HOST` 为示例地址，同步功能需自行改源码构建 |
+
+版本历史见 [CHANGELOG.md](CHANGELOG.md)。
+
 ## 构建
 
 要求：JDK 17+、Android SDK、Gradle 8.7（未带 wrapper，需自行安装）

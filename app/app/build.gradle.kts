@@ -21,9 +21,14 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        // 浏览页地址：内网优先，连不上自动回退到家里宽带的公网 IPv6
+        // 独立版的同步地址：回家连 WiFi 时用这个补新片。
+        // 公开发布构建请改成示例值（如 http://192.168.1.100:8091），避免泄露家庭网络信息。
+        buildConfigField("String", "SYNC_HOST", "\"http://192.168.1.100:8091\"")
+
+        // ⚠️ 以下 WEB_BASE* 为「旧版连 NAS 浏览页」遗留，独立版不再使用，
+        //     仅保兼容旧分支；发布构建请替换成示例地址。
         buildConfigField("String", "WEB_BASE", "\"https://192.168.1.100:8443/?nosw=1\"")
-        buildConfigField("String", "WEB_BASE_HTTP", "\"http://127.0.0.1:8091\"")
+        buildConfigField("String", "WEB_BASE_HTTP", "\"http://192.168.1.100:8091\"")
         buildConfigField("String", "WEB_BASE_LAN", "\"https://192.168.1.100:8443\"")
         buildConfigField(
             "String", "WEB_BASE_WAN",
