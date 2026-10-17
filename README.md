@@ -117,12 +117,36 @@ App 侧增量接口：`GET /api/app/delta?after=<vod_time>&limit=1500`
 │       ├── MusicApi.kt         酷我接口封装
 │       └── SyncManager.kt      回家自动同步
 ├── server/       NAS 端（Python 标准库，无第三方依赖）
-│   ├── web.py      浏览页 + 索引 API + 增量接口
-│   ├── crawler.py  采集站抓取（全量 / 增量 / 断点续传）
-│   ├── db.py       查询层
-│   └── tls_proxy.py 零依赖 HTTPS 反代
+│   ├── web.py            浏览页 + 索引 API + 增量接口
+│   ├── music.py          网页版音乐页（本地曲库封面墙）
+│   ├── music_online.py   网页版在线音乐（代理 SQMusic）
+│   ├── crawler.py        采集站抓取（全量 / 增量 / 断点续传）
+│   ├── db.py             查询层
+│   ├── tls_proxy.py      零依赖 HTTPS 反代
+│   └── sqmusic-compose.example.yml  音乐下载入库（可选）
+├── docs/         sqmusic.md 下载入库方案部署说明
 └── tools/        数据导出、页面生成、验证脚本
 ```
+
+## 电脑上也能用（网页版）
+
+同一套 `server/` 除了给 App 提供接口，本身就是完整的网页应用：
+
+```
+http://<NAS>:8091/        影视封面墙（分类 / 搜索 / 播放）
+http://<NAS>:8091/music   音乐页（本地曲库 + 在线搜索）
+```
+
+电脑浏览器直接打开即可；手机浏览器打开 `https://<NAS>:8443`（PWA）也是同一套。
+App 与网页版共用索引和进度，区别只是 App 把索引带在了身上、出门也能用。
+
+## 音乐下载入库（可选）
+
+App 里的「在线音乐」只播不存。想把歌真正存下来的话，配套一套
+SQMusic + Navidrome（见 `docs/sqmusic.md` 与 `server/sqmusic-compose.example.yml`）：
+
+- SQMusic 搜歌 → 按 `歌手/专辑/歌名` 落盘，标签封面歌词自动写好
+- Navidrome 自动扫描入库，电脑网页 / 手机 Subsonic 客户端都能放
 
 ## 几个踩过的坑（详见代码注释）
 

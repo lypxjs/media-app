@@ -1,0 +1,60 @@
+# SQMusic：搜歌 / 选码率 / 下载入库。完整说明见 docs/sqmusic.md
+# 使用前把 CHANGE_ME_STRONG_PASSWORD 改掉，音乐目录按需修改。
+# SQMusic：从各音乐平台抓取音源，落盘到本地音乐库
+# 与 Navidrome 共用同一音乐目录 → 下载后 Navidrome 自动扫描入库
+services:
+  sqmusic_mysql:
+    image: mysql:5.7
+    container_name: sqmusic_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: CHANGE_ME_STRONG_PASSWORD
+      MYSQL_DATABASE: sqmusicv3
+      TZ: Asia/Shanghai
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./sqmusic/mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pCHANGE_ME_STRONG_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+    networks:
+      - sqnet
+
+  sqmusic_main:
+    image: ghcr.io/59799517/simple_sq_music_plus:latest
+    container_name: sqmusic_main
+    restart: always
+    environment:
+      DB_IP: sqmusic_mysql
+      DB_PORT: "3306"
+      DB_NAME: sqmusicv3
+      DB_USERNAME: root
+      DB_PASSWORD: CHANGE_ME_STRONG_PASSWORD
+      TZ: Asia/Shanghai
+    volumes:
+      - ./music:/music
+    depends_on:
+      sqmusic_mysql:
+        condition: service_healthy
+    networks:
+      - sqnet
+
+  sqmusic_web:
+    image: registry.cn-hangzhou.aliyuncs.com/sqdockler/simple_sq_music_plus_web:latest
+    container_name: sqmusic_web
+    restart: always
+    ports:
+      - "8996:80"
+    depends_on:
+      - sqmusic_main
+    networks:
+      - sqnet
+
+networks:
+  sqnet:
+    driver: bridge

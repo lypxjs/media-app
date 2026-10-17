@@ -8,7 +8,11 @@
 const { chromium } = require('playwright-core');
 const fs = require('fs');
 
-const EXE = 'C:/Users/31572/AppData/Local/ms-playwright/chromium-1223/chrome-win64/chrome.exe';
+// Playwright 需要一个 Chromium 可执行文件：
+//   npm i playwright-core && npx playwright install chromium
+// 然后用环境变量指定路径，或直接改这一行
+const EXE = process.env.CHROME ||
+  'C:/Users/<you>/AppData/Local/ms-playwright/chromium-*/chrome-win64/chrome.exe';
 const PAGE = 'file:///D:/codebuddy/2026-10-14-21-50-02/android/app/src/main/assets/www/index.html';
 const MOCK = JSON.parse(fs.readFileSync(
   'D:/codebuddy/2026-10-14-21-50-02/build_app/mock.json', 'utf8'));
